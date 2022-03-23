@@ -38,7 +38,7 @@ def search(target, text, context=7):
 
 def getPlayers(team_abbreviation):
     page = requests.get(
-        "https://www.pro-football-reference.com/teams/" + team_abbreviation.lower() + "/2018_roster.htm")
+        "https://www.pro-football-reference.com/teams/" + team_abbreviation.lower() + "/2021_roster.htm")
 
     soup = BeautifulSoup(page.content, 'html.parser')
 
@@ -66,7 +66,7 @@ def getPlayers(team_abbreviation):
 
     return players
 
-def start():
+def startupScript():
     cnx = mysql.connector.connect(
         host="127.0.0.1",
         port=3306,
@@ -161,6 +161,11 @@ def start():
     add_nfl_team = (
         'INSERT INTO nfl_data(name, team_abbreviation, team_wins, team_losses, team_fumbles, team_interceptions, team_penalties)'
         'VALUES (%s,%s,%s,%s,%s,%s,%s)')
+    add_root_user = (
+        'INSERT INTO user(first_name, last_name, email, password) VALUES (%s,%s,%s,%s)'
+        )
+    cursor.execute(add_root_user, ("luke", "fron", "lukefron@ou.edu", "password"))
+    print("root added")
 
     for team in nfl_data:
         # Inserts into database. Tuple is a python collection method to contain our fields in an object
@@ -187,7 +192,7 @@ def start():
     cursor.close()
     cnx.commit()
     
-def login(email, password):
+def loginUser(email, password):
     
     cnx = mysql.connector.connect(
         host="127.0.0.1",
@@ -203,13 +208,37 @@ def login(email, password):
 
     # Sets the connection object's database to my DB
     cnx.database = DB_NAME
-    # Commits to save changes
-    cnx.commit()
 
-    cursor.execute('SELECT * FROM user WHERE email = %s AND password = %s', (email, password,))
-    cnx.commit()
+    cursor.execute('SELECT * FROM user WHERE email = %s AND password = %s', (email, password))
+    output = cursor.fetchone()
     # Fetch one record and return result
-    return cursor.fetchone()
+    return output;
+
+
+
+def getAllTables():
+    cnx = mysql.connector.connect(
+        host="127.0.0.1",
+        port=3306,
+        user="root",
+        password="boomersooner7")
+
+    # Get a cursor
+    cursor = cnx.cursor()
+
+    DB_NAME = 'fronheiser_CS_3203'
+
+    # Sets the connection object's database to my DB
+    cnx.database = DB_NAME
+    # Commits to save changes
+    cnx.commit() 
+    
+    cursor.execute("Show tables;")
+    myresult = cursor.fetchall()
+    return myresult
+
+#CRUD Operations for USER
+#CREATE
 def createUser(email, password, first_name, last_name):
     cnx = mysql.connector.connect(
         host="127.0.0.1",
@@ -236,34 +265,11 @@ def createUser(email, password, first_name, last_name):
 
     # Fetch one record and return result
     return cursor.fetchone()
-
-def getAllTables():
-    cnx = mysql.connector.connect(
-        host="127.0.0.1",
-        port=3306,
-        user="root",
-        password="boomersooner7")
-
-    # Get a cursor
-    cursor = cnx.cursor()
-
-    DB_NAME = 'fronheiser_CS_3203'
-
-    # Sets the connection object's database to my DB
-    cnx.database = DB_NAME
-    # Commits to save changes
-    cnx.commit() 
+#READ
+#def getUserByEmail(email):
     
-    cursor.execute("Show tables;")
-    myresult = cursor.fetchall()
-    return myresult
-
-
-
-
-
-
-
+#UPDATE
+#DELETE
 
 
 
