@@ -1,0 +1,35 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Wed Mar 23 20:44:42 2022
+
+@author: lukefronheiser
+"""
+
+<html>
+  <head>
+    <title>New User Page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="static/bootstrap.min.css" rel="stylesheet" media="screen">
+  </head>
+  <body>
+    <div class="container">
+      <h1>Create a New Account</h1>
+      <br>
+      <form action="" method="post">
+        <input type="text" placeholder="Email" name="email" value="{{
+          request.form.email }}">
+         <input type="password" placeholder="Password" name="password" value="{{
+          request.form.password }}">
+         <input type="first_name" placeholder="First_name" name="first_name" value="{{
+          request.form.first_name }}">
+         <input type="last_name" placeholder="Last_name" name="last_name" value="{{
+          request.form.last_name }}">
+        <input class="btn btn-default" type="submit" value="createNewUser">
+      </form>
+      {% if error %}
+        <p class="error"><strong>Error:</strong> {{ error }}
+      {% endif %}
+    </div>
+  </body>
+</html>

@@ -74,7 +74,7 @@ def startupScript():
         password="boomersooner7")
 
     # Get a cursor
-    cursor = cnx.cursor()
+    cursor = cnx.cursor(buffered=True)
 
     DB_NAME = 'fronheiser_CS_3203'
     # Method creates database if it doesn't exist with the given name
@@ -164,30 +164,42 @@ def startupScript():
     add_root_user = (
         'INSERT INTO user(first_name, last_name, email, password) VALUES (%s,%s,%s,%s)'
         )
-    cursor.execute(add_root_user, ("luke", "fron", "lukefron@ou.edu", "password"))
-    print("root added")
+    get_first_team = ('SELECT* FROM nfl_data LIMIT 1')
+    
+    cursor.execute(get_first_team)
+    output = cursor.fetchall()
+    if output == None:
+        for team in nfl_data:
+            # Inserts into database. Tuple is a python collection method to contain our fields in an object
+            #     values = [(team.name, team.abbreviation, team.wins, team.losses, team.fumbles, team.interceptions, team.penalties)]
+            cursor.execute(add_nfl_team, (
+            team.name, team.abbreviation, team.wins, team.losses, team.fumbles, team.interceptions, team.penalties))
+            #     cursor.execute(add_players_by_team, ())
+            print("success")
+        for team in nfl_data:
+            cursor.execute('SELECT nfl.team_id FROM nfl_data AS nfl WHERE nfl.team_abbreviation=%s', (team.abbreviation,))
+            myresult = cursor.fetchall()
+            val = myresult
+            num = val[0][0]
+            allPlayers = getPlayers(team.abbreviation)
+            for player in allPlayers:
+                updateDict = {"team_id": num}
+                updateDict.update(player)
+                placeholders = ', '.join(['%s'] * len(updateDict))
+                columns = ', '.join(updateDict.keys())
+                sql = "INSERT INTO %s ( %s ) VALUES ( %s )" % ('players', columns, placeholders)
+                cursor.execute(sql, list(updateDict.values()))
+                print("added")
+        
+        cursor.execute(add_root_user, ("luke", "fron", "lukefron@ou.edu", "password"))
+        print("root added")
 
-    for team in nfl_data:
-        # Inserts into database. Tuple is a python collection method to contain our fields in an object
-        #     values = [(team.name, team.abbreviation, team.wins, team.losses, team.fumbles, team.interceptions, team.penalties)]
-        cursor.execute(add_nfl_team, (
-        team.name, team.abbreviation, team.wins, team.losses, team.fumbles, team.interceptions, team.penalties))
-        #     cursor.execute(add_players_by_team, ())
-        print("success")
-    for team in nfl_data:
-        cursor.execute('SELECT nfl.team_id FROM nfl_data AS nfl WHERE nfl.team_abbreviation=%s', (team.abbreviation,))
-        myresult = cursor.fetchall()
-        val = myresult
-        num = val[0][0]
-        allPlayers = getPlayers(team.abbreviation)
-        for player in allPlayers:
-            updateDict = {"team_id": num}
-            updateDict.update(player)
-            placeholders = ', '.join(['%s'] * len(updateDict))
-            columns = ', '.join(updateDict.keys())
-            sql = "INSERT INTO %s ( %s ) VALUES ( %s )" % ('players', columns, placeholders)
-            cursor.execute(sql, list(updateDict.values()))
-            print("added")
+    else: 
+        print("data is loaded. App ready")
+    
+
+
+
 
     cursor.close()
     cnx.commit()
@@ -201,7 +213,7 @@ def loginUser(email, password):
         password="boomersooner7")
 
     # Get a cursor
-    cursor = cnx.cursor()
+    cursor = cnx.cursor(buffered=True)
 
     DB_NAME = 'fronheiser_CS_3203'
     
@@ -224,7 +236,7 @@ def getAllTables():
         password="boomersooner7")
 
     # Get a cursor
-    cursor = cnx.cursor()
+    cursor = cnx.cursor(buffered=True)
 
     DB_NAME = 'fronheiser_CS_3203'
 
@@ -247,28 +259,175 @@ def createUser(email, password, first_name, last_name):
         password="boomersooner7")
 
     # Get a cursor
-    cursor = cnx.cursor()
+    cursor = cnx.cursor(buffered=True)
 
     DB_NAME = 'fronheiser_CS_3203'
     
 
     # Sets the connection object's database to my DB
     cnx.database = DB_NAME
-    # Commits to save changes
-    cnx.commit()
 
-    add_new_user = (
-        'INSERT INTO user(first_name, last_name, email, password)'
-        'VALUES (%s,%s,%s,%s)')
-    cursor.execute(add_new_user, (first_name, last_name, email, password))
+    cursor.execute('INSERT INTO user(first_name, last_name, email, password) VALUES (%s,%s,%s,%s)', (first_name, last_name, email, password))
+    cursor.execute('SELECT * FROM user WHERE email = %s AND password = %s', (email, password))
+    output = cursor.fetchone()
     cnx.commit()
-
     # Fetch one record and return result
-    return cursor.fetchone()
+    return output
+
+def getTeams():
+    cnx = mysql.connector.connect(
+        host="127.0.0.1",
+        port=3306,
+        user="root",
+        password="boomersooner7")
+
+    # Get a cursor
+    cursor = cnx.cursor(buffered=True)
+
+    DB_NAME = 'fronheiser_CS_3203'
+    
+
+    # Sets the connection object's database to my DB
+    cnx.database = DB_NAME
+    cursor.execute('SELECT * FROM nfl_data')
+    output = cursor.fetchmany(32)
+    return output
+
+def getAllPlayers():
+    cnx = mysql.connector.connect(
+        host="127.0.0.1",
+        port=3306,
+        user="root",
+        password="boomersooner7")
+
+    # Get a cursor
+    cursor = cnx.cursor(buffered=True)
+    DB_NAME = 'fronheiser_CS_3203'
+    
+
+    # Sets the connection object's database to my DB
+    cnx.database = DB_NAME
+    cursor.execute('SELECT * FROM players')
+    output = cursor.fetchall()
+    return output
+
+def getTeamRosterById(teamid):
+    cnx = mysql.connector.connect(
+        host="127.0.0.1",
+        port=3306,
+        user="root",
+        password="boomersooner7")
+
+    # Get a cursor
+    cursor = cnx.cursor(buffered=True)
+
+    DB_NAME = 'fronheiser_CS_3203'
+    
+
+    # Sets the connection object's database to my DB
+    cnx.database = DB_NAME
+    cursor.execute('SELECT * FROM players WHERE team_id = %s', (teamid,))
+    output = cursor.fetchall()
+    return output
+
+def setUserFavoriteTeam(team_id,user_id):
+    cnx = mysql.connector.connect(
+        host="127.0.0.1",
+        port=3306,
+        user="root",
+        password="boomersooner7")
+
+    # Get a cursor
+    cursor = cnx.cursor(buffered=True)
+
+    DB_NAME = 'fronheiser_CS_3203'
+    
+
+    # Sets the connection object's database to my DB
+    cnx.database = DB_NAME
+
+    cursor.execute('INSERT INTO users_favorite_teams(user_id, team_id) VALUES (%s, %s)', (user_id, team_id))
+    output = cursor.fetchall()
+    return output
+def setUserFavoritePlayer(player_id, user_id):
+    cnx = mysql.connector.connect(
+        host="127.0.0.1",
+        port=3306,
+        user="root",
+        password="boomersooner7")
+
+    # Get a cursor
+    cursor = cnx.cursor(buffered=True)
+
+    DB_NAME = 'fronheiser_CS_3203'
+    
+
+    # Sets the connection object's database to my DB
+    cnx.database = DB_NAME
+
+    cursor.execute('INSERT INTO users_favorite_players(user_id, player_id) VALUES (%s, %s)', (user_id, player_id))
+    output = cursor.fetchall()
+    return output
+def getUserFavoritePlayers(user_id):
+    cnx = mysql.connector.connect(
+        host="127.0.0.1",
+        port=3306,
+        user="root",
+        password="boomersooner7")
+
+    # Get a cursor
+    cursor = cnx.cursor(buffered=True)
+
+    DB_NAME = 'fronheiser_CS_3203'
+    
+
+    # Sets the connection object's database to my DB
+    cnx.database = DB_NAME
+
+    cursor.execute('SELECT* FROM users_favorite_players WHERE user_id = %s', (user_id,))
+    output = cursor.fetchall()
+    return output
+def getUserFavoriteTeams(user_id):
+    cnx = mysql.connector.connect(
+        host="127.0.0.1",
+        port=3306,
+        user="root",
+        password="boomersooner7")
+
+    # Get a cursor
+    cursor = cnx.cursor(buffered=True)
+
+    DB_NAME = 'fronheiser_CS_3203'
+    
+
+    # Sets the connection object's database to my DB
+    cnx.database = DB_NAME
+
+    cursor.execute('SELECT* FROM users_favorite_teams WHERE user_id = %s', (user_id,))
+    output = cursor.fetchall()
+    return output
 #READ
-#def getUserByEmail(email):
+def getUserByEmail(email):
+    cnx = mysql.connector.connect(
+        host="127.0.0.1",
+        port=3306,
+        user="root",
+        password="boomersooner7")
+
+    # Get a cursor
+    cursor = cnx.cursor(buffered=True)
+
+    DB_NAME = 'fronheiser_CS_3203'
+    
+
+    # Sets the connection object's database to my DB
+    cnx.database = DB_NAME
+    cursor.execute('SELECT * FROM user WHERE email = %s', (email,))
+    output = cursor.fetchall()
+    return output
     
 #UPDATE
+
 #DELETE
 
 
