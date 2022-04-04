@@ -188,11 +188,13 @@ app.get('/forecastrange/:lat/:lon/:first/:second', (req,res) => {
  */
 function gamedayForecast(team, start, modifier, response)
 {
+  //get data from the datatable
   lat = team.location.lat;
   lon = team.location.lon;
 
   forecast = getForecast(lat, lon, response);
-  
+
+  //get hours, and then use similar logic from getforecastrange api
 }
 
 
