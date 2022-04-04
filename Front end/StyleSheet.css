@@ -1,0 +1,164 @@
+::backdrop {
+  background-color: slategrey;
+}
+/*Headers*/
+a {
+  color: inherit;
+}
+h1 {
+  color: darkcyan;
+  margin-top: 5pt;
+  margin-bottom: 3pt;
+  text-decoration: underline;
+}
+h2 {
+  color: darkcyan;
+  margin-bottom: 5pt;
+  text-decoration-line: wavy;
+}
+
+/*Table Modifications*/
+table {
+  margin-top: 15pt;
+  overflow: scroll;
+}
+tr {
+  text-align: center;
+}
+td {
+  text-align: center;
+}
+.Team:hover {
+  background-color: darkcyan;
+  font-size: larger;
+}
+.player:hover {
+  background-color: darkcyan;
+  font-size: larger;
+  display: block;
+}
+
+/* Style The Dropdown Button */
+.dropbtn {
+  background-color: darkcyan;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: darkgray;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+/* Links inside the dropdown */
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {
+  background-color: darkcyan;
+}
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+/* Change the background color of the dropdown button when the dropdown content is shown */
+.dropdown:hover .dropbtn {
+  background-color: darkslategray;
+}
+
+/* Popup container - can be anything you want */
+.popup {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+/* The actual popup */
+.popup .popuptext {
+  visibility: hidden;
+  width: 160px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 8px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -80px;
+}
+/* Popup arrow */
+.popup .popuptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+/* Toggle this class - hide and show the popup */
+.popup .show {
+  visibility: visible;
+  -webkit-animation: fadeIn 0.2s;
+  animation: fadeIn 0.2s;
+}
+/* Add animation (fade in the popup) */
+@-webkit-keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+/* Controlling the top and bottom sections of the page*/
+#top {
+  max-inline-size: inherit;
+  overflow: scroll;
+  text-overflow: ellipsis;
+}
+#bottom {
+  overflow-x: scroll;
+  position: fixed;
+  bottom: 5pt;
+  border-spacing: 5pt;
+}
+/* Controlling the storyboards*/
+.story {
+  border-style: solid;
+  border-color: lightgray;
+  border-image: repeat;
+  border-image-slice: fill;
+  border-image-width: 5pt;
+  text-indent: 5pt;
+  width: 40%;
+}
