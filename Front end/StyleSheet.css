@@ -162,3 +162,9 @@ td {
   text-indent: 5pt;
   width: 40%;
 }
+
+#searchresults {
+  border-style: solid;
+  border-color: grey;
+  background-color: palegoldenrod;
+}
