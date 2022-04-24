@@ -1,0 +1,94 @@
+{
+    "@context": [
+        "https://geojson.org/geojson-ld/geojson-context.jsonld",
+        {
+            "@version": "1.1",
+            "wx": "https://api.weather.gov/ontology#",
+            "s": "https://schema.org/",
+            "geo": "http://www.opengis.net/ont/geosparql#",
+            "unit": "http://codes.wmo.int/common/unit/",
+            "@vocab": "https://api.weather.gov/ontology#",
+            "geometry": {
+                "@id": "s:GeoCoordinates",
+                "@type": "geo:wktLiteral"
+            },
+            "city": "s:addressLocality",
+            "state": "s:addressRegion",
+            "distance": {
+                "@id": "s:Distance",
+                "@type": "s:QuantitativeValue"
+            },
+            "bearing": {
+                "@type": "s:QuantitativeValue"
+            },
+            "value": {
+                "@id": "s:value"
+            },
+            "unitCode": {
+                "@id": "s:unitCode",
+                "@type": "@id"
+            },
+            "forecastOffice": {
+                "@type": "@id"
+            },
+            "forecastGridData": {
+                "@type": "@id"
+            },
+            "publicZone": {
+                "@type": "@id"
+            },
+            "county": {
+                "@type": "@id"
+            }
+        }
+    ],
+    "id": "https://api.weather.gov/points/35.2095,-97.4457",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            -97.445700000000002,
+            35.209499999999998
+        ]
+    },
+    "properties": {
+        "@id": "https://api.weather.gov/points/35.2095,-97.4457",
+        "@type": "wx:Point",
+        "cwa": "OUN",
+        "forecastOffice": "https://api.weather.gov/offices/OUN",
+        "gridId": "OUN",
+        "gridX": 99,
+        "gridY": 81,
+        "forecast": "https://api.weather.gov/gridpoints/OUN/99,81/forecast",
+        "forecastHourly": "https://api.weather.gov/gridpoints/OUN/99,81/forecast/hourly",
+        "forecastGridData": "https://api.weather.gov/gridpoints/OUN/99,81",
+        "observationStations": "https://api.weather.gov/gridpoints/OUN/99,81/stations",
+        "relativeLocation": {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -97.4736999,
+                    35.127015
+                ]
+            },
+            "properties": {
+                "city": "Goldsby",
+                "state": "OK",
+                "distance": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 9518.5052952661008
+                },
+                "bearing": {
+                    "unitCode": "wmoUnit:degree_(angle)",
+                    "value": 15
+                }
+            }
+        },
+        "forecastZone": "https://api.weather.gov/zones/forecast/OKZ029",
+        "county": "https://api.weather.gov/zones/county/OKC027",
+        "fireWeatherZone": "https://api.weather.gov/zones/fire/OKZ029",
+        "timeZone": "America/Chicago",
+        "radarStation": "KTLX"
+    }
+}

@@ -167,7 +167,7 @@ def startupScript():
     get_first_team = ('SELECT* FROM nfl_data LIMIT 1')
     
     cursor.execute(get_first_team)
-    output = cursor.fetchall()
+    output = cursor.fetchone()
     if output == None:
         for team in nfl_data:
             # Inserts into database. Tuple is a python collection method to contain our fields in an object
@@ -310,7 +310,34 @@ def getAllPlayers():
     cursor.execute('SELECT * FROM players')
     output = cursor.fetchall()
     return output
+def getPlayerDataById(playerid):
+    cnx = mysql.connector.connect(
+        host="127.0.0.1",
+        port=3306,
+        user="root",
+        password="boomersooner7")
 
+    # Get a cursor
+    cursor = cnx.cursor(buffered=True)
+    DB_NAME = 'fronheiser_CS_3203'
+    # Sets the connection object's database to my DB
+    cnx.database = DB_NAME
+    cursor.execute('SELECT playerLink FROM players WHERE player_id = %s' , (playerid,))
+    output = cursor.fetchall()
+    url = str(output)
+    page = requests.get('url')
+
+    soup = BeautifulSoup(page.content, 'html.parser')
+    
+    body = str(soup)
+    print(body)
+
+    scrapeObj = list(search('player', body))
+
+    players = []
+    for dataPoint in scrapeObj:
+        print(dataPoint)
+    return body
 def getTeamRosterById(teamid):
     cnx = mysql.connector.connect(
         host="127.0.0.1",
@@ -423,9 +450,9 @@ def getUserByEmail(email):
     # Sets the connection object's database to my DB
     cnx.database = DB_NAME
     cursor.execute('SELECT * FROM user WHERE email = %s', (email,))
-    output = cursor.fetchall()
+    output = cursor.fetchone()
     return output
-    
+
 #UPDATE
 
 #DELETE

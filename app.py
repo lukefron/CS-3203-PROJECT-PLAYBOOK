@@ -6,7 +6,7 @@ Created on Mon Mar 21 14:11:40 2022
 @author: lukefronheiser
 """
 
-from startupScript import startupScript, loginUser, createUser, getTeams, getAllPlayers,getTeamRosterById
+from startupScript import startupScript, loginUser, createUser, getTeams, getAllPlayers,getTeamRosterById, getUserByEmail, getPlayerDataById
 from flask import Flask, render_template, request, redirect, url_for, session, jsonify
 from errno import errorcode
 import mysql.connector
@@ -15,6 +15,7 @@ import requests
 import re
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = "Secret"
 startupScript = startupScript()
 
 
@@ -61,13 +62,25 @@ def getAllPlayer():
         players = getAllPlayers()
         return jsonify(players)
     return "Error"
+@app.route('/players/<playerid>', methods = ['GET'])
+def getPlayerData(playerid=0):
+    if request.method == 'GET':
+        player = getPlayerDataById(int(playerid))
+        return jsonify(player)
+    return "Error"
 
 @app.route('/teams/roster/<teamid>')
 def getRosterByTeamId(teamid=0):
     if request.method == 'GET':
         team = getTeamRosterById(int(teamid))
         return jsonify(team)
-
+@app.route('/testContext')
+def getUserInContext():
+    if request.method == 'GET':
+        user = getUserByEmail(session['email'])
+        return jsonify(user)
+    else:
+        return "hshd"
 if __name__ == '__main__':
     app.run(debug=True, port=5000) #run app in debug mode on port 5000
 
