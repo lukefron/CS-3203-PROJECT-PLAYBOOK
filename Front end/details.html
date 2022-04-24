@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Details</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <!--Style sheet-->
+    <link href="StyleSheet.css" rel="stylesheet" />
+  </head>
+  <body>
+
+    <!--THIS IS THE DETAILED PAGE OF ANY TEAM OR PLAYER-->
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"
+    ></script>
+
+    <!--The dashboard linked to the playbook title. Will be present for all pages that are linked to this one-->
+    <h1><a href="dashboard.html">Playbook</a></h1>
+    <h2>Helping you call the next play</h2>
+
+        <!--Portioning the screen into a left and right side, the left side housing the thin tables and the right being the main portion of the info-->
+        <div id="container" style="width: 100%">
+            <!--This will contain the favorite players and teams table the LHS of the page-->
+            <div id="left" style="float: left; width: 10%">
+            <table class="table table-striped table-bordered">
+                <thead>
+                <tr>
+                    <th>Favorite Players</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td scope="row" class="player"><div class="popup" onmouseover="openPopup(1)">Player 1
+                        <span class="popuptext" id="myPopup1">Player 1 data</span>
+                        </div></td>
+                </tr>
+                <tr>
+                    <td scope="row" class="player"><div class="popup" onmouseover="openPopup(2)">Player 2
+                    <span class="popuptext" id="myPopup2">Player 2 data</span>
+                    </div></td>
+                </tr>
+                <!--Continue this for the necessary players needed-->
+                </tbody>
+            </table>
+            <!--Script to trigger to pop-up window when hovered-->
+            <script>
+                // When the user hovers on div, open the popup
+                function openPopup(num) {
+                    var popup = document.getElementById("myPopup" + num);
+                    popup.classList.toggle("show");
+                }
+                </script>
+            <table class="table table-striped table-bordered">
+                <thead>
+                <tr>
+                    <th>Favorite Teams</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td scope="row" class="Team">Team 1</td>
+                </tr>
+                <tr>
+                    <td scope="row" class="Team">Team 2</td>
+                </tr>
+                <!--Continue this for the necessary Teams needed-->
+                </tbody>
+            </table>
+            </div>
+            <!--This is the right panel of the screen, which will house the main data tables and other info-->
+            <div id="right" style="float: right; width: 90%">
+                <div class = "container" style = "height: 100%">
+                    <div id = "top", style = "float: top; height: 40%">
+                    <h3>Player Name</h3>
+                    This is where the graph goes</div>
+                <div id = "bottom", style = "float: top; height: 60%">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Total</th>
+                                <th>Week 1</th>
+                                <th>Week 2</th>
+                                <th>Week 3</th>
+                            </tr>
+                        <!--Add weeks as needed-->
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td scope="row"> Statpoint 1</td>
+                                <td>Total data</td>
+                                <td>Week 1 Data</td>
+                                <td>Week 2 Data</td>
+                                <td>Week 3 Data</td>
+                            </tr>
+                            <tr>
+                                <td scope="row">Statpoint 2</td>
+                                <td>Total data</td>
+                                <td>Week 1 data</td>
+                                <td>Week 2 Data</td>
+                                <td>Week 3 Data</td>
+                            </tr>
+                        <!--Expand as needed-->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+</body>
+</html>

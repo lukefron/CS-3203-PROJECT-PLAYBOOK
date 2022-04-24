@@ -46,11 +46,6 @@ const { url } = require('inspector');
 /**
  * This method is to grab and parse the data from the NWS API
  * 
- * For demonstration purposes, I the same coordinates and the NWS API demo on their website:
- * https://weather-gov.github.io/api/general-faqs#how-to-get-forecast
- * Lat: 38.8894
- * Lon: -77.0352
- * 
  * NOTE: First two runs will throw errors (one for each request), but after this the files will be written
  *      I'm not sure why this error keeps occuring
  */
@@ -183,3 +178,23 @@ app.get('/forecastrange/:lat/:lon/:first/:second', (req,res) => {
   }
   res.send(forecastString);
 });
+
+/**
+ * 
+ * @param {String} team Home team playing
+ * @param {String} start Start time hour as a string, in CT, in 24hr clock
+ * @param {String} modifier Weekday of the game if not on Sunday
+ * @param {*} response 
+ */
+function gamedayForecast(team, start, modifier, response)
+{
+  //get data from the datatable
+  lat = team.location.lat;
+  lon = team.location.lon;
+
+  forecast = getForecast(lat, lon, response);
+
+  //get hours, and then use similar logic from getforecastrange api
+}
+
+

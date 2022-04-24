@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Dashboard</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <link href="StyleSheet.css" rel="stylesheet" />
+  </head>
+  <body>
+     <!--THIS IS THE HOME PAGE FOR PLAYBOOK WHEN A USER IS LOGGED IN-->
+
+      <!--Creating the drowpdown menue in the top right of the screen. This will be present throughout the rest of the pages liked from here-->
+    <div class="dropdown" style="float: right; width: 10%">
+      <button class="dropbtn">Profile</button>
+      <div class="dropdown-content">
+        <a href="search.html">Edit My Profile</a>
+        <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">About Us</a>
+        <a href="home.html">Log Out</a>
+      </div>
+    </div>
+    <!--The dashboard linked to the playbook title. Will be present for all pages that are linked to this one-->
+    <h1><a href = dashboard.html>Playbook</a></h1>
+    <h2>Helping you call the next play</h2>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"
+    ></script>
+    <!--Portioning the screen into a left and right side, the left side housing the thin tables and the right being the main portion of the info-->
+    <div id="container" style="width: 100%">
+      <!--This will contain the favorite players and teams table the LHS of the page-->
+      <div id="left" style="float: left; width: 10%">
+        <table class="table table-striped table-bordered">
+          <thead>
+            <tr>
+              <th>Favorite Players</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+                <td scope="row" class="player"><div class="popup" onmouseover="openPopup(1)">Player 1
+                    <span class="popuptext" id="myPopup1">Player 1 data</span>
+                  </div></td>
+            </tr>
+            <tr>
+              <td scope="row" class="player"><div class="popup" onmouseover="openPopup(2)">Player 2
+                <span class="popuptext" id="myPopup2">Player 2 data</span>
+              </div></td>
+            </tr>
+            <!--Continue this for the necessary players needed-->
+          </tbody>
+        </table>
+        <!--Script to trigger to pop-up window when hovered-->
+        <script>
+            // When the user hovers on div, open the popup
+            function openPopup(num) {
+              var popup = document.getElementById("myPopup" + num);
+              popup.classList.toggle("show");
+            }
+            </script>
+        <table class="table table-striped table-bordered">
+          <thead>
+            <tr>
+              <th>Favorite Teams</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td scope="row" class="Team">Team 1</td>
+            </tr>
+            <tr>
+              <td scope="row" class="Team">Team 2</td>
+            </tr>
+            <!--Continue this for the necessary Teams needed-->
+          </tbody>
+        </table>
+      </div>
+      <!--This is the right panel of the screen, which will house the main data tables and other info-->
+      <!--Planning on portioning this section into a upper and lower, with the lower looking similar to the home.html bottom-->
+      <div id="right" style="float: right; width: 90%">
+        <div class="çontainer" style="height: 100%">
+            <div id="top" style="float: top; height: 75%">
+                <table class="table table-bordered table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>Team 1</th>
+                        <th>Record</th>
+                        <th>@ Team 2</th>
+                        <th>Record</th>
+                        <th>Location</th>
+                        <th>Forecast</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="clickable" onclick="window.location= 'details.html'">
+                        <td scope="row">Team 1</td>
+                        <td>Team 1 Record</td>
+                        <td>Team 2</td>
+                        <td>Team 2 Record</td>
+                        <td>Location</td>
+                        <td>Forecast</td>
+                      </tr>
+                      <tr class="clickable" onclick="window.location= 'details.html'">
+                        <td scope="row">Team 1</td>
+                        <td>Team 1 Record</td>
+                        <td>Team 2</td>
+                        <td>Team 2 Record</td>
+                        <td>Location</td>
+                        <td>Forecast</td>
+                      </tr>
+                      <tr class="clickable" onclick="window.location= 'details.html'">
+                        <td scope="row">Team 1</td>
+                        <td>Team 1 Record</td>
+                        <td>Team 2</td>
+                        <td>Team 2 Record</td>
+                        <td>Location</td>
+                        <td>Forecast</td>
+                      </tr>
+                      <!--Continue as needed-->
+                </tbody>
+            </table></div>
+            <div id="bottom" style="position: absolute; height: 25%">
+                <!--This portions the bottom sections into different widths, each hopefully populating with differnt stories scraped online-->
+                <div class="container" style="width: 100%">
+                  <div class="story" id="story1" style="float: left; width: 30%">
+                    <a href="#">Headline</a>
+                    <img
+                      src="Test_Photo.jpeg"
+                      alt="Baker Baby"
+                      style="width: 99%; object-fit: cover; padding: 7pt"
+                    />
+                  </div>
+                  <div class="story" id="story2" style="float: left; width: 30%">
+                    <a href="#">Headline 2</a>
+                    <img
+                      src="Test_Photo.jpeg"
+                      alt="Baker Baby"
+                      style="width: 99%; object-fit: cover; padding: 7pt"
+                    />
+                  </div>
+                  <div class="story" id="story3" style="float: left; width: 30%">
+                    <a href="#">Headline 3</a>
+                    <img
+                      src="Test_Photo.jpeg"
+                      alt="Baker Baby"
+                      style="width: 99%; object-fit: cover; padding: 7pt"
+                    />
+                  </div>
+                </div>
+              </div>
+        </div>
+    </div>
+  </body>
+</html>
