@@ -16,8 +16,8 @@
       integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
       crossorigin="anonymous"
     />
-    <!--Our own stylesheet-->
-    <link href="StyleSheet.css" rel="stylesheet" />
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/StyleSheet.css') }}">
+    
   </head>
   <body>
     <!--THIS IS THE INITIAL PAGE ONE LOADS INTO WHEN ACCESSING PLAYBOOK-->
@@ -39,13 +39,13 @@
       integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
       crossorigin="anonymous"
     ></script>
-    <a
-      href="index.html"
-      class="btn btn-info"
-      role="button"
-      style="float: right; width: 10%"
-      >Log-in page</a
-    >
+          <form action="" method="post">
+            <input type="text" placeholder="Email" name="email" value="{{
+              request.form.email }}">
+             <input type="password" placeholder="Password" name="password" value="{{
+              request.form.password }}">
+            <input class="btn btn-default" type="submit" value="Login">
+          </form>
     <h1><a href="home.html">Playbook</a></h1>
     <h2>Helping you call the next play</h2>
     <!--Portions the page into a top and bottom section, with the first section being 70% of the height and the second being 30%-->
@@ -66,74 +66,70 @@
           </thead>
           <tbody>
             <!--This made the whole row clickable. This will link to the page of the team that the row is occupied by-->
-            <tr
-              class="clickable"
-              onclick="window.location= 'dashboard.html'"
-              id="hometable"
-            >
+            <tr>
               <td scope="row" class="team_name">Team 1</td>
               <td>Data 1</td>
               <td>Data 2</td>
               <td>Data 3</td>
               <td>Data 4</td>
             </tr>
-            <tr class="clickable" onclick="window.location= 'dashboard.html'">
+            <tr>
               <td scope="row" class="team_name">Team 2</td>
               <td>Data 1</td>
               <td>Data 2</td>
               <td>Data 3</td>
               <td>Data 4</td>
             </tr>
-            <tr class="clickable" onclick="window.location= 'dashboard.html'">
+            <tr>
               <td scope="row" class="team_name">Team 3</td>
               <td>Data 1</td>
               <td>Data 2</td>
               <td>Data 3</td>
               <td>Data 4</td>
             </tr>
-            <tr class="clickable" onclick="window.location= 'dashboard.html'">
+            <tr >
               <td scope="row" class="team_name">Team 4</td>
               <td>Data 1</td>
               <td>Data 2</td>
               <td>Data 3</td>
               <td>Data 4</td>
             </tr>
-            <tr class="clickable" onclick="window.location= 'dashboard.html'">
+            <tr>
               <td scope="row" class="team_name">Team 5</td>
               <td>Data 1</td>
               <td>Data 2</td>
               <td>Data 3</td>
               <td>Data 4</td>
             </tr>
-            <tr class="clickable" onclick="window.location= 'dashboard.html'">
+            <tr>
               <td scope="row" class="team_name">Team 6</td>
               <td>Data 1</td>
               <td>Data 2</td>
               <td>Data 3</td>
               <td>Data 4</td>
             </tr>
-            <tr class="clickable" onclick="window.location= 'dashboard.html'">
+            <tr>
               <td scope="row" class="team_name">Team 7</td>
               <td>Data 1</td>
               <td>Data 2</td>
               <td>Data 3</td>
               <td>Data 4</td>
             </tr>
-            <tr class="clickable" onclick="window.location= 'dashboard.html'">
+            <tr>
               <td scope="row" class="team_name">Team 8</td>
               <td>Data 1</td>
               <td>Data 2</td>
               <td>Data 3</td>
               <td>Data 4</td>
             </tr>
-            <tr class="clickable" onclick="window.location= 'dashboard.html'">
+            <tr>
               <td scope="row" class="team_name">Team 9</td>
               <td>Data 1</td>
               <td>Data 2</td>
               <td>Data 3</td>
               <td>Data 4</td>
             </tr>
-            <tr class="clickable" onclick="window.location= 'dashboard.html'">
+            <tr>
               <td scope="row" class="team_name">Team 10</td>
               <td>Data 1</td>
               <td>Data 2</td>
@@ -143,35 +139,6 @@
             <!--Continue this for the amount that we need it to go-->
           </tbody>
         </table>
-      </div>
-      <div id="bottom" style="float: bottom; height: 25%">
-        <!--This portions the bottom sections into different widths, each hopefully populating with differnt stories scraped online-->
-        <div class="container" style="width: 100%">
-          <div class="story" id="story1" style="float: left; width: 30%">
-            <a href="#">Headline</a>
-            <img
-              src="Test_Photo.jpeg"
-              alt="Baker Baby"
-              style="width: 99%; object-fit: cover; padding: 7pt"
-            />
-          </div>
-          <div class="story" id="story2" style="float: left; width: 30%">
-            <a href="#">Headline 2</a>
-            <img
-              src="Test_Photo.jpeg"
-              alt="Baker Baby"
-              style="width: 99%; object-fit: cover; padding: 7pt"
-            />
-          </div>
-          <div class="story" id="story3" style="float: left; width: 30%">
-            <a href="#">Headline 3</a>
-            <img
-              src="Test_Photo.jpeg"
-              alt="Baker Baby"
-              style="width: 99%; object-fit: cover; padding: 7pt"
-            />
-          </div>
-        </div>
       </div>
     </div>
   </body>

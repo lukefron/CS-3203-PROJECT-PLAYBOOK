@@ -165,6 +165,8 @@ def startupScript():
         'INSERT INTO user(first_name, last_name, email, password) VALUES (%s,%s,%s,%s)'
         )
     get_first_team = ('SELECT* FROM nfl_data LIMIT 1')
+    add_root_user_fav_players = ('INSERT INTO users_favorite_players(user_id, player_id) VALUES (%s, %s)')
+    add_root_user_fav_teams = ('INSERT INTO users_favorite_teams(user_id, team_id) VALUES (%s, %s)')
     
     cursor.execute(get_first_team)
     output = cursor.fetchone()
@@ -192,6 +194,14 @@ def startupScript():
                 print("added")
         
         cursor.execute(add_root_user, ("luke", "fron", "lukefron@ou.edu", "password"))
+        cursor.execute(add_root_user_fav_players, ("1", "1"))
+        cursor.execute(add_root_user_fav_players, ("1", "2"))
+        cursor.execute(add_root_user_fav_players, ("1", "3"))
+
+        cursor.execute(add_root_user_fav_teams, ("1", "1"))
+        cursor.execute(add_root_user_fav_teams, ("1", "2"))
+        cursor.execute(add_root_user_fav_teams, ("1", "3"))
+
         print("root added")
 
     else: 
@@ -292,6 +302,22 @@ def getTeams():
     cursor.execute('SELECT * FROM nfl_data')
     output = cursor.fetchmany(32)
     return output
+def getTeamById(teamid):
+    cnx = mysql.connector.connect(
+        host="127.0.0.1",
+        port=3306,
+        user="root",
+        password="boomersooner7")
+
+    # Get a cursor
+    cursor = cnx.cursor(buffered=True)
+    DB_NAME = 'fronheiser_CS_3203'
+    # Sets the connection object's database to my DB
+    cnx.database = DB_NAME
+    
+    cursor.execute('SELECT * FROM nfl_data WHERE team_id = %s' , (teamid,))
+    output = cursor.fetchone()
+    return output
 
 def getAllPlayers():
     cnx = mysql.connector.connect(
@@ -322,22 +348,27 @@ def getPlayerDataById(playerid):
     DB_NAME = 'fronheiser_CS_3203'
     # Sets the connection object's database to my DB
     cnx.database = DB_NAME
-    cursor.execute('SELECT playerLink FROM players WHERE player_id = %s' , (playerid,))
-    output = cursor.fetchall()
-    url = str(output)
-    page = requests.get('url')
+    #cursor.execute('SELECT playerLink FROM players WHERE player_id = %s' , (playerid,))
+    #output = cursor.fetchall()
+    #url = str(output)
+    #page = requests.get('url')
 
-    soup = BeautifulSoup(page.content, 'html.parser')
+    #soup = BeautifulSoup(page.content, 'html.parser')
     
-    body = str(soup)
-    print(body)
+    #body = str(soup)
+    #print(body)
 
-    scrapeObj = list(search('player', body))
+    #scrapeObj = list(search('player', body))
 
-    players = []
-    for dataPoint in scrapeObj:
-        print(dataPoint)
-    return body
+    #players = []
+    #for dataPoint in scrapeObj:
+    #    print(dataPoint)
+    #return body
+    cursor.execute('SELECT * FROM players WHERE player_id = %s' , (playerid,))
+    output = cursor.fetchone()
+    return output
+
+    
 def getTeamRosterById(teamid):
     cnx = mysql.connector.connect(
         host="127.0.0.1",

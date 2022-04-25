@@ -6,18 +6,27 @@ Created on Mon Mar 21 14:11:40 2022
 @author: lukefronheiser
 """
 
-from startupScript import startupScript, loginUser, createUser, getTeams, getAllPlayers,getTeamRosterById, getUserByEmail, getPlayerDataById
+from startupScript import startupScript, getTeamById, loginUser, createUser, getTeams, getAllPlayers,getTeamRosterById, getUserByEmail, getPlayerDataById, getUserFavoritePlayers, getUserFavoriteTeams 
 from flask import Flask, render_template, request, redirect, url_for, session, jsonify
 from errno import errorcode
 import mysql.connector
 from bs4 import BeautifulSoup
 import requests
 import re
+from flask_bootstrap import Bootstrap
+
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = "Secret"
 startupScript = startupScript()
 
+# Route for homepage
+@app.route('/', methods=['GET', 'POST'])
+def home():
+    error = None
+    if request.method == 'POST':
+        return redirect(url_for('login', email=request.form['email'], password=request.form['password']))
+    return render_template('home.html', error=error)
 
 # Route for handling the login page logic
 @app.route('/login', methods=['GET', 'POST'])
@@ -29,7 +38,8 @@ def login():
             userReturn = loginUser(request.form['email'], request.form['password'])
             if userReturn:
                 session['email'] = request.form['email']
-                return jsonify(userReturn)
+                #return jsonify(userReturn)
+                return render_template('dashboard.html', error=error)
             else: 
                 error = "Invalid Credentials"
     return render_template('index.html', error=error)
@@ -81,7 +91,32 @@ def getUserInContext():
         return jsonify(user)
     else:
         return "hshd"
+@app.route('/getUserFavoritePlayers')
+def GetUserFavoritePlayers():
+    if request.method == 'GET':
+        currentUser = getUserByEmail(session['email'])
+        playerList = getUserFavoritePlayers(currentUser[0])
+        output = []
+        for player in playerList:
+            target = getPlayerDataById(player[1])
+            output.append(target)
+        return jsonify(output)
+    else:
+        return "hshd"
+@app.route('/getUserFavoriteTeams')
+def GetUserFavoriteTeams():
+    if request.method == 'GET':
+        currentUser = getUserByEmail(session['email'])
+        teamList = getUserFavoriteTeams(currentUser[0])
+        output = []
+        for team in teamList:
+            target = getTeamById(team[1])
+            output.append(target)
+        return jsonify(output)
+    else:
+        return "hshd"
 if __name__ == '__main__':
+    Bootstrap(app)
     app.run(debug=True, port=5000) #run app in debug mode on port 5000
 
 
