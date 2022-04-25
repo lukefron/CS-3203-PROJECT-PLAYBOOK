@@ -44,6 +44,15 @@ def login():
                 error = "Invalid Credentials"
     return render_template('index.html', error=error)
 
+# Route for handling the login page logic
+@app.route('/search', methods=['GET', 'POST'])
+def search():
+    error = None
+    if request.method == 'POST':
+        #if request.form['email'] != 'admin' or request.form['password'] != 'admin':
+        return "hello"
+    return render_template('search.html', error=error)
+
     
 @app.route('/login/createNewUser', methods = ['GET','POST'])
 def createNewUser():
