@@ -16,10 +16,22 @@
       integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
       crossorigin="anonymous"
     />
-    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/StyleSheet.css') }}">
-    
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static',filename='styles/StyleSheet.css') }}"
+    />
   </head>
   <body>
+  
+    <!--Log in method-->
+          <form action="" method="post">
+            <input type="text" placeholder="Email" name="email" value="{{
+              request.form.email }}">
+             <input type="password" placeholder="Password" name="password" value="{{
+              request.form.password }}">
+            <input class="btn btn-success" type="submit" value="Login">
+          </form>
     <!--THIS IS THE INITIAL PAGE ONE LOADS INTO WHEN ACCESSING PLAYBOOK-->
 
     <!-- Optional JavaScript -->
@@ -39,107 +51,27 @@
       integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
       crossorigin="anonymous"
     ></script>
-          <form action="" method="post">
-            <input type="text" placeholder="Email" name="email" value="{{
-              request.form.email }}">
-             <input type="password" placeholder="Password" name="password" value="{{
-              request.form.password }}">
-            <input class="btn btn-default" type="submit" value="Login">
-          </form>
-    <h1><a href="home.html">Playbook</a></h1>
-    <h2>Helping you call the next play</h2>
-    <!--Portions the page into a top and bottom section, with the first section being 70% of the height and the second being 30%-->
-    <div class="çontainer" style="height: 100%">
-      <div id="top" style="float: top; height: 75%">
-        <table
-          class="table table-striped table-bordered table-hover"
-          style="max-height: 1000px; overflow-y: scroll"
-        >
-          <thead>
-            <tr>
-              <th>Teams</th>
-              <th>Data point 1</th>
-              <th>Data point 2</th>
-              <th>Data point 3</th>
-              <th>Data point 4</th>
-            </tr>
-          </thead>
-          <tbody>
-            <!--This made the whole row clickable. This will link to the page of the team that the row is occupied by-->
-            <tr>
-              <td scope="row" class="team_name">Team 1</td>
-              <td>Data 1</td>
-              <td>Data 2</td>
-              <td>Data 3</td>
-              <td>Data 4</td>
-            </tr>
-            <tr>
-              <td scope="row" class="team_name">Team 2</td>
-              <td>Data 1</td>
-              <td>Data 2</td>
-              <td>Data 3</td>
-              <td>Data 4</td>
-            </tr>
-            <tr>
-              <td scope="row" class="team_name">Team 3</td>
-              <td>Data 1</td>
-              <td>Data 2</td>
-              <td>Data 3</td>
-              <td>Data 4</td>
-            </tr>
-            <tr >
-              <td scope="row" class="team_name">Team 4</td>
-              <td>Data 1</td>
-              <td>Data 2</td>
-              <td>Data 3</td>
-              <td>Data 4</td>
-            </tr>
-            <tr>
-              <td scope="row" class="team_name">Team 5</td>
-              <td>Data 1</td>
-              <td>Data 2</td>
-              <td>Data 3</td>
-              <td>Data 4</td>
-            </tr>
-            <tr>
-              <td scope="row" class="team_name">Team 6</td>
-              <td>Data 1</td>
-              <td>Data 2</td>
-              <td>Data 3</td>
-              <td>Data 4</td>
-            </tr>
-            <tr>
-              <td scope="row" class="team_name">Team 7</td>
-              <td>Data 1</td>
-              <td>Data 2</td>
-              <td>Data 3</td>
-              <td>Data 4</td>
-            </tr>
-            <tr>
-              <td scope="row" class="team_name">Team 8</td>
-              <td>Data 1</td>
-              <td>Data 2</td>
-              <td>Data 3</td>
-              <td>Data 4</td>
-            </tr>
-            <tr>
-              <td scope="row" class="team_name">Team 9</td>
-              <td>Data 1</td>
-              <td>Data 2</td>
-              <td>Data 3</td>
-              <td>Data 4</td>
-            </tr>
-            <tr>
-              <td scope="row" class="team_name">Team 10</td>
-              <td>Data 1</td>
-              <td>Data 2</td>
-              <td>Data 3</td>
-              <td>Data 4</td>
-            </tr>
-            <!--Continue this for the amount that we need it to go-->
-          </tbody>
-        </table>
-      </div>
+    <!--This creates the background beautification-->
+    <header class="page-header header container-fluid"></header>
+    <script>
+      $(document).ready(function () {
+        $(".header").height($(window).height());
+      });
+    </script>
+
+    <!--Intro to our webpage-->
+    <div class="description">
+      <h1>Welcome to the Playbook!</h1>
+      <h2>Helping you call the next play</h2>
+      <p>
+        Our mission is to provide you a customizable dashboard so that you can
+        keep track of you favorite players and teams. Our user friendly design
+        allows for quick customization and easily accessible information on any
+        player or team you desire in this age in ever-increasing speed. We are
+        COMPLETELY FREE, so there is no catch on signing up to staying up to
+        date and making important game-day decisions on all of you sportsbook
+        deals.
+      </p>
     </div>
   </body>
 </html>

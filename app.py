@@ -6,12 +6,13 @@ Created on Mon Mar 21 14:11:40 2022
 @author: lukefronheiser
 """
 
-from startupScript import startupScript, getTeamById, loginUser, createUser, getTeams, getAllPlayers,getTeamRosterById, getUserByEmail, getPlayerDataById, getUserFavoritePlayers, getUserFavoriteTeams 
-from flask import Flask, render_template, request, redirect, url_for, session, jsonify
+from startupScript import addUserSearchedPlayers, getUserSearchedPlayers,addUserFavoriteTeam, deletePlayerSearches, deleteSearches, addUserFavoritePlayer, addUserSearchedTeams,startupScript,getUserSearchedTeams,getPlayerByString,getTeamById,getTeamByString, loginUser, createUser, getTeams, getAllPlayers,getTeamRosterById, getUserByEmail, getPlayerDataById, getUserFavoritePlayers, getUserFavoriteTeams 
+from flask import Flask, render_template, request, redirect, url_for, session, jsonify,Response
 from errno import errorcode
 import mysql.connector
 from bs4 import BeautifulSoup
 import requests
+from sportsipy.nfl.teams import Teams
 import re
 from flask_bootstrap import Bootstrap
 
@@ -19,6 +20,8 @@ from flask_bootstrap import Bootstrap
 app = Flask(__name__)
 app.config['SECRET_KEY'] = "Secret"
 startupScript = startupScript()
+
+
 
 # Route for homepage
 @app.route('/', methods=['GET', 'POST'])
@@ -44,15 +47,81 @@ def login():
                 error = "Invalid Credentials"
     return render_template('index.html', error=error)
 
-# Route for handling the login page logic
 @app.route('/search', methods=['GET', 'POST'])
 def search():
     error = None
     if request.method == 'POST':
         #if request.form['email'] != 'admin' or request.form['password'] != 'admin':
-        return "hello"
+        return jsonify("hello") 
     return render_template('search.html', error=error)
 
+# Route for handling the login page logic
+@app.route('/teamSearch', methods=['POST', 'GET'])
+def teamSearch():
+    searchTeamsFound = []
+    currentUser = getUserByEmail(session['email'])
+    error = None
+    if request.method == 'POST':
+        output = request.get_json()
+        inputStr = str(output['teamName'])
+        teams = Teams()
+        if output:
+            i = 1
+            for team in teams:
+                print(team)
+                print(team.name)
+                if inputStr.lower() in team.name.lower():
+                    print("found")
+                    print(i)
+                    print(currentUser[0])
+                    addUserSearchedTeams(i, currentUser[0])
+                i = i+1            
+        return jsonify(searchTeamsFound)
+    
+        
+    else: 
+        lists = []
+        lists = getUserSearchedTeams(currentUser[0])
+        output = []
+        for each in lists:
+            team = getTeamById(each[1])
+            output.append(team)
+        return jsonify(output)
+
+
+    
+# Route for handling the login page logic
+@app.route('/playerSearch', methods=['GET', 'POST'])
+def playersearch():
+    searchPlayersFound = []
+    currentUser = getUserByEmail(session['email'])
+    error = None
+    if request.method == 'POST':
+        output = request.get_json()
+        inputStr = str(output['playerName'])
+        players = list(getAllPlayers())
+        i = 0
+        for player in players:
+            print(player)
+            name = player[2]+ " " + player[3]
+            if inputStr.lower() in name.lower():
+                print(i)
+                print(currentUser[0])
+                addUserSearchedPlayers(i, currentUser[0])
+                searchPlayersFound.append(player)
+            i = i+1            
+        return jsonify(searchPlayersFound)
+
+    
+        
+    else: 
+        lists = []
+        lists = getUserSearchedPlayers(currentUser[0])
+        output = []
+        for each in lists:
+            player = getPlayerDataById(each[1])
+            output.append(player)
+        return jsonify(output)
     
 @app.route('/login/createNewUser', methods = ['GET','POST'])
 def createNewUser():
@@ -124,6 +193,43 @@ def GetUserFavoriteTeams():
         return jsonify(output)
     else:
         return "hshd"
+@app.route('/getTeamById/<teamid>')
+def GetTeamById(teamid=0):
+    if request.method == 'GET':
+        team = getTeamById(int(teamid))
+        return jsonify(team)
+    else:
+        return "hshd"
+@app.route('/addFavoriteTeam/<teamid>')
+def addFavoriteTeamById(teamid=0):
+    if request.method == 'GET':
+        currentUser = getUserByEmail(session['email'])
+        output = addUserFavoriteTeam(teamid, currentUser[0])
+        return jsonify(output)
+    else:
+        return "hshd"
+@app.route('/clearSearches')
+def clearAllSearch():
+    if request.method == 'GET':
+        currentUser = getUserByEmail(session['email'])
+        output = deleteSearches(currentUser[0])
+        print(output)
+        if (output is None):
+            return jsonify([])
+        else: return jsonify(output)
+    else:
+        return "hshd"
+@app.route('/clearPlayerSearches')
+def clearAllPlayerSearch():
+    if request.method == 'GET':
+        currentUser = getUserByEmail(session['email'])
+        output = deletePlayerSearches(currentUser[0])
+        if (output is None):
+            return jsonify([])
+        else: return jsonify(output)
+    else:
+        return "hshd"
+
 if __name__ == '__main__':
     Bootstrap(app)
     app.run(debug=True, port=5000) #run app in debug mode on port 5000

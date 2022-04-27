@@ -6,13 +6,13 @@ a {
   color: inherit;
 }
 h1 {
-  color: darkcyan;
+  color: white;
   margin-top: 5pt;
   margin-bottom: 3pt;
   text-decoration: underline;
 }
 h2 {
-  color: darkcyan;
+  color: white;
   margin-bottom: 5pt;
   text-decoration-line: wavy;
 }
@@ -167,4 +167,40 @@ td {
   border-style: solid;
   border-color: grey;
   background-color: palegoldenrod;
+}
+
+body {
+/* The following sections will be helping style the landing page */
+  background-image: url(background.jpeg);
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+.overlay {
+  position: absolute;
+  min-height: 100%;
+  min-width: 100%;
+  left: 0;
+  top: 0;
+  background: rgba(0, 0, 0, 0.6);
+}
+.description {
+	left: 50%;
+	position: absolute;
+	top: 45%;
+	transform: translate(-50%, -55%);
+	text-align: center;
+}
+.description h1 {
+	color: darkcyan;
+  font-family:'Courier New', Courier, monospace;
+}
+.description h2 {
+	color: darkcyan;
+  font-family:'Courier New', Courier, monospace;
+}
+.description p {
+	color: #fff;
+	font-size: 1.3rem;
+	line-height: 1.5;
 }

@@ -141,6 +141,22 @@ def startupScript():
         "  FOREIGN KEY (`user_id`) REFERENCES user(user_id),"
         "  FOREIGN KEY (`team_id`) REFERENCES nfl_data(team_id)"
         ") ENGINE=InnoDB")
+    TABLES['searched_teams'] = (
+        "CREATE TABLE `searched_teams` ("
+        "  `user_id` int(11) NOT NULL,"
+        "  `team_id` int(11) NOT NULL,"
+        "  PRIMARY KEY (`user_id`, `team_id`),"
+        "  FOREIGN KEY (`user_id`) REFERENCES user(user_id),"
+        "  FOREIGN KEY (`team_id`) REFERENCES nfl_data(team_id)"
+        ") ENGINE=InnoDB")
+    TABLES['searched_players'] = (
+        "CREATE TABLE `searched_players` ("
+        "  `user_id` int(11) NOT NULL,"
+        "  `player_id` int(11) NOT NULL,"
+        "  PRIMARY KEY (`user_id`, `player_id`),"
+        "  FOREIGN KEY (`user_id`) REFERENCES user(user_id),"
+        "  FOREIGN KEY (`player_id`) REFERENCES players(player_id)"
+        ") ENGINE=InnoDB")
 
     ##Inserting tables into database
     for table_name in TABLES:
@@ -167,7 +183,9 @@ def startupScript():
     get_first_team = ('SELECT* FROM nfl_data LIMIT 1')
     add_root_user_fav_players = ('INSERT INTO users_favorite_players(user_id, player_id) VALUES (%s, %s)')
     add_root_user_fav_teams = ('INSERT INTO users_favorite_teams(user_id, team_id) VALUES (%s, %s)')
-    
+    add_root_user_searched_teams = ('INSERT INTO searched_teams(user_id, team_id) VALUES (%s, %s)')
+    add_root_user_searched_players = ('INSERT INTO searched_players(user_id, player_id) VALUES (%s, %s)')
+
     cursor.execute(get_first_team)
     output = cursor.fetchone()
     if output == None:
@@ -201,6 +219,14 @@ def startupScript():
         cursor.execute(add_root_user_fav_teams, ("1", "1"))
         cursor.execute(add_root_user_fav_teams, ("1", "2"))
         cursor.execute(add_root_user_fav_teams, ("1", "3"))
+        
+        cursor.execute(add_root_user_searched_teams, ("1", "5"))
+        cursor.execute(add_root_user_searched_teams, ("1", "6"))
+        cursor.execute(add_root_user_searched_teams, ("1", "7"))
+        
+        cursor.execute(add_root_user_searched_players, ("1", "69"))
+        cursor.execute(add_root_user_searched_players, ("1", "66"))
+        cursor.execute(add_root_user_searched_players, ("1", "71"))
 
         print("root added")
 
@@ -388,7 +414,42 @@ def getTeamRosterById(teamid):
     output = cursor.fetchall()
     return output
 
-def setUserFavoriteTeam(team_id,user_id):
+def getTeamByString(teamString):
+    nfl_data = Teams()
+    outputTeams = []
+    for team in nfl_data:
+        if teamString.lower() in team.name.lower():
+            outputTeams.append(team)
+        elif teamString.lower() in team.abbreviation.lower():
+            outputTeams.append(team)
+    return outputTeams
+
+def getPlayerByString(playerString):
+    cnx = mysql.connector.connect(
+        host="127.0.0.1",
+        port=3306,
+        user="root",
+        password="boomersooner7")
+
+    # Get a cursor
+    cursor = cnx.cursor(buffered=True)
+
+    DB_NAME = 'fronheiser_CS_3203'
+    
+    allPlayers = getAllPlayers()
+    i = 0
+    returnPlayers = []
+    for player in allPlayers:
+        if playerString.lower() in player[i][2].lower():
+            returnPlayers.append(player)
+        elif playerString.lower() in player[i][3].lower():
+            returnPlayers.append(player)
+        i = i+1
+
+    return returnPlayers
+
+
+def addUserFavoriteTeam(team_id,user_id):
     cnx = mysql.connector.connect(
         host="127.0.0.1",
         port=3306,
@@ -405,9 +466,27 @@ def setUserFavoriteTeam(team_id,user_id):
     cnx.database = DB_NAME
 
     cursor.execute('INSERT INTO users_favorite_teams(user_id, team_id) VALUES (%s, %s)', (user_id, team_id))
+    cnx.commit()
+    
+    cnx = mysql.connector.connect(
+        host="127.0.0.1",
+        port=3306,
+        user="root",
+        password="boomersooner7")
+
+    # Get a cursor
+    cursor = cnx.cursor(buffered=True)
+
+    DB_NAME = 'fronheiser_CS_3203'
+    
+
+    # Sets the connection object's database to my DB
+    cnx.database = DB_NAME
+    cursor.execute('SELECT * FROM users_favorite_teams WHERE user_id = %s AND team_id = %s', (user_id, team_id))
     output = cursor.fetchall()
     return output
-def setUserFavoritePlayer(player_id, user_id):
+
+def addUserFavoritePlayer(player_id, user_id):
     cnx = mysql.connector.connect(
         host="127.0.0.1",
         port=3306,
@@ -464,6 +543,48 @@ def getUserFavoriteTeams(user_id):
     cursor.execute('SELECT* FROM users_favorite_teams WHERE user_id = %s', (user_id,))
     output = cursor.fetchall()
     return output
+def getUserSearchedTeams(user_id):
+    cnx = mysql.connector.connect(
+        host="127.0.0.1",
+        port=3306,
+        user="root",
+        password="boomersooner7")
+
+    # Get a cursor
+    cursor = cnx.cursor(buffered=True)
+
+    DB_NAME = 'fronheiser_CS_3203'
+    
+
+    # Sets the connection object's database to my DB
+    cnx.database = DB_NAME
+
+    cursor.execute('SELECT* FROM searched_teams WHERE user_id = %s', (user_id,))
+    output = cursor.fetchall()
+    return output
+def addUserSearchedTeams(team_id,user_id):
+    cnx = mysql.connector.connect(
+        host="127.0.0.1",
+        port=3306,
+        user="root",
+        password="boomersooner7")
+
+    # Get a cursor
+    cursor = cnx.cursor(buffered=True)
+
+    DB_NAME = 'fronheiser_CS_3203'
+    
+
+    # Sets the connection object's database to my DB
+    cnx.database = DB_NAME
+
+    cursor.execute('INSERT INTO searched_teams(user_id, team_id) VALUES (%s, %s)', (user_id, team_id))
+    cursor.execute('SELECT * FROM searched_teams WHERE user_id = %s AND team_id = %s', (user_id, team_id))
+    output = cursor.fetchone()
+    cnx.commit()
+    
+    return output
+
 #READ
 def getUserByEmail(email):
     cnx = mysql.connector.connect(
@@ -482,10 +603,118 @@ def getUserByEmail(email):
     cnx.database = DB_NAME
     cursor.execute('SELECT * FROM user WHERE email = %s', (email,))
     output = cursor.fetchone()
+    cnx.commit()
     return output
 
-#UPDATE
+def deleteSearches(user_id):
+    cnx = mysql.connector.connect(
+        host="127.0.0.1",
+        port=3306,
+        user="root",
+        password="boomersooner7")
 
+    # Get a cursor
+    cursor = cnx.cursor(buffered=True)
+
+    DB_NAME = 'fronheiser_CS_3203'
+    
+
+    # Sets the connection object's database to my DB
+    cnx.database = DB_NAME
+    cursor.execute('DELETE FROM searched_teams WHERE user_id = %s', (user_id,))
+    cnx.commit()
+    
+    cnx = mysql.connector.connect(
+        host="127.0.0.1",
+        port=3306,
+        user="root",
+        password="boomersooner7")
+
+    # Get a cursor
+    cursor = cnx.cursor(buffered=True)
+
+    DB_NAME = 'fronheiser_CS_3203'
+    
+
+    # Sets the connection object's database to my DB
+    cnx.database = DB_NAME
+    output = cursor.execute('SELECT * FROM searched_teams WHERE user_id = %s', (user_id,))
+    return output
+def deletePlayerSearches(user_id):
+    cnx = mysql.connector.connect(
+        host="127.0.0.1",
+        port=3306,
+        user="root",
+        password="boomersooner7")
+
+    # Get a cursor
+    cursor = cnx.cursor(buffered=True)
+
+    DB_NAME = 'fronheiser_CS_3203'
+    
+
+    # Sets the connection object's database to my DB
+    cnx.database = DB_NAME
+    cursor.execute('DELETE FROM searched_players WHERE user_id = %s', (user_id,))
+    cnx.commit()
+    
+    cnx = mysql.connector.connect(
+        host="127.0.0.1",
+        port=3306,
+        user="root",
+        password="boomersooner7")
+
+    # Get a cursor
+    cursor = cnx.cursor(buffered=True)
+
+    DB_NAME = 'fronheiser_CS_3203'
+    
+
+    # Sets the connection object's database to my DB
+    cnx.database = DB_NAME
+    output = cursor.execute('SELECT * FROM searched_players WHERE user_id = %s', (user_id,))
+    return output
+def getUserSearchedPlayers(user_id):
+    cnx = mysql.connector.connect(
+        host="127.0.0.1",
+        port=3306,
+        user="root",
+        password="boomersooner7")
+
+    # Get a cursor
+    cursor = cnx.cursor(buffered=True)
+
+    DB_NAME = 'fronheiser_CS_3203'
+    
+
+    # Sets the connection object's database to my DB
+    cnx.database = DB_NAME
+
+    cursor.execute('SELECT* FROM searched_players WHERE user_id = %s', (user_id,))
+    output = cursor.fetchall()
+    return output
+def addUserSearchedPlayers(player_id,user_id):
+    cnx = mysql.connector.connect(
+        host="127.0.0.1",
+        port=3306,
+        user="root",
+        password="boomersooner7")
+
+    # Get a cursor
+    cursor = cnx.cursor(buffered=True)
+
+    DB_NAME = 'fronheiser_CS_3203'
+    
+
+    # Sets the connection object's database to my DB
+    cnx.database = DB_NAME
+
+    cursor.execute('INSERT INTO searched_players(user_id, player_id) VALUES (%s, %s)', (user_id, player_id))
+    cursor.execute('SELECT * FROM searched_players WHERE user_id = %s AND player_id = %s', (user_id, player_id))
+    output = cursor.fetchone()
+    cnx.commit()
+    
+    return output
 #DELETE
 
 
