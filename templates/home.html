@@ -30,7 +30,8 @@
               request.form.email }}">
              <input type="password" placeholder="Password" name="password" value="{{
               request.form.password }}">
-            <input class="btn btn-success" type="submit" value="Login">
+            <input class="btn btn-success" style="background-color:darkcyan; border-color:white; color:white" type="submit" value="Login">
+            <a href="{{ url_for('createNewUser') }}" style="color: white; background-color: darkcyan;">Create New User</a>
           </form>
     <!--THIS IS THE INITIAL PAGE ONE LOADS INTO WHEN ACCESSING PLAYBOOK-->
 

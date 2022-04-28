@@ -14,6 +14,7 @@ from bs4 import BeautifulSoup
 import requests
 from sportsipy.nfl.teams import Teams
 import re
+import json
 from flask_bootstrap import Bootstrap
 
 
@@ -47,6 +48,17 @@ def login():
                 error = "Invalid Credentials"
     return render_template('index.html', error=error)
 
+@app.route('/dashboard')
+def dashboard():
+    error = None
+    return render_template('dashboard.html', error=error)
+
+# Route for handling the login page logic
+@app.route('/logout', methods=['GET', 'POST'])
+def logout():
+    error = None
+    session['email'] = ""
+    return redirect(url_for('home'))
 @app.route('/search', methods=['GET', 'POST'])
 def search():
     error = None
@@ -68,25 +80,25 @@ def teamSearch():
         if output:
             i = 1
             for team in teams:
-                print(team)
-                print(team.name)
                 if inputStr.lower() in team.name.lower():
                     print("found")
-                    print(i)
                     print(currentUser[0])
                     addUserSearchedTeams(i, currentUser[0])
                 i = i+1            
-        return jsonify(searchTeamsFound)
+            return jsonify(searchTeamsFound)
     
         
     else: 
         lists = []
         lists = getUserSearchedTeams(currentUser[0])
-        output = []
+        teamList = []
         for each in lists:
-            team = getTeamById(each[1])
-            output.append(team)
-        return jsonify(output)
+            print(each[2])
+            team = getTeamById(each[2])
+            print(team)
+            teamList.append(team)
+        print(jsonify(teamList))
+        return jsonify(teamList)
 
 
     
@@ -99,31 +111,25 @@ def playersearch():
     if request.method == 'POST':
         output = request.get_json()
         inputStr = str(output['playerName'])
-        players = list(getAllPlayers())
-        i = 0
+        players = getAllPlayers()
+        i = 1
         for player in players:
-            print(player)
             name = player[2]+ " " + player[3]
             if inputStr.lower() in name.lower():
-                print(i)
-                print(currentUser[0])
                 addUserSearchedPlayers(i, currentUser[0])
-                searchPlayersFound.append(player)
-            i = i+1            
+            i = i+1   
         return jsonify(searchPlayersFound)
 
-    
-        
     else: 
         lists = []
         lists = getUserSearchedPlayers(currentUser[0])
         output = []
         for each in lists:
-            player = getPlayerDataById(each[1])
+            player = getPlayerDataById(each[2])
             output.append(player)
         return jsonify(output)
     
-@app.route('/login/createNewUser', methods = ['GET','POST'])
+@app.route('/createNewUser', methods = ['GET','POST'])
 def createNewUser():
     error = None
     if request.method == 'POST':
@@ -134,6 +140,7 @@ def createNewUser():
                 return redirect("http://localhost:5000/login", code=302)
             else:
                 error = "Failure"
+    
     return render_template('newuser.html', error = error)
 
 @app.route('/teams', methods = ['GET'])
@@ -208,15 +215,21 @@ def addFavoriteTeamById(teamid=0):
         return jsonify(output)
     else:
         return "hshd"
+@app.route('/addFavoritePlayer/<playerid>')
+def addFavoritePlayerById(playerid=0):
+    if request.method == 'GET':
+        currentUser = getUserByEmail(session['email'])
+        output = addUserFavoritePlayer(playerid, currentUser[0])
+        return jsonify(output)
+    else:
+        return "hshd"
 @app.route('/clearSearches')
 def clearAllSearch():
     if request.method == 'GET':
         currentUser = getUserByEmail(session['email'])
         output = deleteSearches(currentUser[0])
         print(output)
-        if (output is None):
-            return jsonify([])
-        else: return jsonify(output)
+        return jsonify([])
     else:
         return "hshd"
 @app.route('/clearPlayerSearches')
@@ -224,9 +237,8 @@ def clearAllPlayerSearch():
     if request.method == 'GET':
         currentUser = getUserByEmail(session['email'])
         output = deletePlayerSearches(currentUser[0])
-        if (output is None):
-            return jsonify([])
-        else: return jsonify(output)
+        print(output)
+        return jsonify([])
     else:
         return "hshd"
 

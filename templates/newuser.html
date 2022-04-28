@@ -1,16 +1,26 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Wed Mar 23 20:44:42 2022
-
-@author: lukefronheiser
-"""
 
 <html>
   <head>
-    <title>New User Page</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="static/bootstrap.min.css" rel="stylesheet" media="screen">
+    <title>New User Registration</title>
+    <!-- Required meta tags -->
+	 <meta charset="utf-8">
+	 <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	 <meta name="viewport" content="width=device-width, initial-scale=1">
+	 <meta name="description" content="">
+	 <meta name="author" content="">
+
+
+	   <!-- Bootstrap CSS -->
+       <link
+         rel="stylesheet"
+         href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+         crossorigin="anonymous"
+       />
+       <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/StyleSheet.css') }}">
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script> 
   </head>
   <body>
     <div class="container">
@@ -25,7 +35,7 @@ Created on Wed Mar 23 20:44:42 2022
           request.form.first_name }}">
          <input type="last_name" placeholder="Last_name" name="last_name" value="{{
           request.form.last_name }}">
-        <input class="btn btn-default" type="submit" value="createNewUser">
+        <input class="btn btn-default" type="submit" value="createNewUser" style="background-color:darkcyan; border-color:white; color:white;" >
       </form>
       {% if error %}
         <p class="error"><strong>Error:</strong> {{ error }}

@@ -26,8 +26,8 @@
 
 
     <!--The dashboard linked to the playbook title. Will be present for all pages that are linked to this one-->
-    <h1><a href="dashboard.html">Playbook</a></h1>
-
+    <h1><a href="{{ url_for('dashboard') }}">Playbook</a></h1>
+    
     <!--Portioning the screen into a left and right side, the left side housing the thin tables and the right being the main portion of the info-->
     <div class="container" style="width: 100%">
     <h2>Search for a Team</h2>
@@ -65,7 +65,8 @@
         <thead>
             <tr>
                 <th>ID</th>
-                <th> </th>
+                <th>Team ID</th>
+                <th>Name</th>
             </tr>
         </thead>
         <tbody id="playersearchbody"></tbody>
