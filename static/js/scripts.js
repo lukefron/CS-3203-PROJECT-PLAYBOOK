@@ -41,7 +41,7 @@ $(function() {
                             <td>"' + response[i][1] +'"</td>\
                             <td>"' + response[i][3] + "-" + response[i][4]+'"</td>\
                              <td><a href="/teams/roster/' + response[i][0] +'" style="color: white; background-color: darkcyan;"> View Team Roster </a></td>\
-                            <td><a href="addFavoriteTeam/' + response[i][0] +'"> Add To Favorite Teams</a></td>\
+                            <td><a href="addFavoriteTeam/' + response[i][0] +'" style="color: white; background-color: darkcyan;"> Add To Favorite Teams</a></td>\
                             </tr>\
                             ');
                     }
@@ -108,7 +108,7 @@ $(function() {
                      <td>"' + response[i][1] +'"</td>\
                      <td>"' + response[i][2] + " " + response[i][3] + '"</td>\
                      <td><a href="/teams/roster/' + response[i][1] +'" style="color: white; background-color: darkcyan;"> View Team Roster </a></td>\
-                     <td><a href="addFavoritePlayer/' + response[i][0] +'"> Add To Favorite Players</a></td>\
+                     <td><a href="addFavoritePlayer/' + response[i][0] +'" style="color: white; background-color: darkcyan;"> Add To Favorite Players</a></td>\
                      </tr>\
                             ');
                     }
@@ -135,7 +135,8 @@ $(function() {
                 }
             });
         });
-
+        
+        
 
 
 

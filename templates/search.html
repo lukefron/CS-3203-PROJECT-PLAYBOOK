@@ -29,52 +29,60 @@
     <h1><a href="{{ url_for('dashboard') }}">Playbook</a></h1>
     
     <!--Portioning the screen into a left and right side, the left side housing the thin tables and the right being the main portion of the info-->
-    <div class="container" style="width: 100%">
-    <h2>Search for a Team</h2>
-    <form id="search-form">
-        <input type="text" id="search-input">
-        <button id="search-submit" style="background-color:darkcyan; border-color:white; color:white">Search</button>
-    </form>
-    <button id="get-searched-teams" style="background-color:darkcyan; border-color:white; color:white">Show Results</button>
-    <button id="clear-searched-teams" style="background-color:darkcyan; border-color:white; color:white">Clear Results</button>
-    <table style="color:#fff" bgcolor="gray">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>2021 Record</th>
-                <th> </th>
-            </tr>
-        </thead>
-        <tbody id="searchbody"></tbody>
-    </table>
-    <hr>
-   
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-    <script src="/static/js/scripts.js"></script>
+    <div id="right" style="float: right; width: 90%">
+          <div class="dropdown" style="float: right; width: 10%">
+            <button class="dropbtn">Navigate</button>
+            <div class="dropdown-content">
+              <a href="{{ url_for('search') }}">Search</a>
+              <a href="{{ url_for('viewcharts') }}">View Graphs</a>
+              <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">About Us</a>
+              <a href="{{ url_for('logout') }}">Log Out</a>
+            </div>
+          </div>
+      <h2>Search for a Player</h2>
+     <form id="player-search-form">
+         <input type="text" id="player-search-input">
+         <button id="player-search-submit" style="background-color:darkcyan; border-color:white; color:white">Search</button>
+     </form>
+     <button id="get-searched-players" style="background-color:darkcyan; border-color:white; color:white">Show Results</button>
+     <button id="clear-searched-players" style="background-color:darkcyan; border-color:white; color:white">Clear Results</button>
+     <table style="color:#fff" bgcolor="gray">
+         <thead>
+             <tr>
+                 <th>ID</th>
+                 <th>Team ID</th>
+                 <th>Name</th>
+             </tr>
+         </thead>
+         <tbody id="playersearchbody"></tbody>
+     </table>
+     <h2>Search for a Team</h2>
+     <form id="search-form">
+         <input type="text" id="search-input">
+         <button id="search-submit" style="background-color:darkcyan; border-color:white; color:white">Search</button>
+     </form>
+     <button id="get-searched-teams" style="background-color:darkcyan; border-color:white; color:white">Show Results</button>
+     <button id="clear-searched-teams" style="background-color:darkcyan; border-color:white; color:white">Clear Results</button>
+     <table style="color:#fff" bgcolor="gray">
+         <thead>
+             <tr>
+                 <th>ID</th>
+                 <th>Name</th>
+                 <th>2021 Record</th>
+                 <th> </th>
+             </tr>
+         </thead>
+         <tbody id="searchbody"></tbody>
+     </table>
+
     
-    <div class="container" style="width: 100%">
-    <h2>Search for a Player</h2>
-    <form id="player-search-form">
-        <input type="text" id="player-search-input">
-        <button id="player-search-submit" style="background-color:darkcyan; border-color:white; color:white">Search</button>
-    </form>
-    <button id="get-searched-players" style="background-color:darkcyan; border-color:white; color:white">Show Results</button>
-    <button id="clear-searched-players" style="background-color:darkcyan; border-color:white; color:white">Clear Results</button>
-    <table style="color:#fff" bgcolor="gray">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Team ID</th>
-                <th>Name</th>
-            </tr>
-        </thead>
-        <tbody id="playersearchbody"></tbody>
-    </table>
-    <hr>
-   
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-    <script src="/static/js/scripts.js"></script>
+     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+     <script src="/static/js/scripts.js"></script>
+    
+     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+     <script src="/static/js/scripts.js"></script>
+    </div>
+
 
 
    
@@ -103,62 +111,61 @@
         </table>
       </div>
       <script>
+        $(window).on('load', function(){
+              $.ajax({
+      			url: '/getUserFavoritePlayers',
+      			type: 'GET',
+      			success: function(response){
+                      let tbodyEl2 = $('#favoriteplayerstable');
+                      tbodyEl2.html('');
+                      
+                      for (let i = 0; i < response.length; i++) {
+                      console.log(response[i])
+                      console.log(response[i][1])
+                          tbodyEl2.append('\
+                              <tr>\
+                             <td><a href="players/' + response[i][0] +'" style="color: white;">' + response[i][2] + " " + response[i][3] + '</a></td>\
+                              </tr>\
+                              ');
+                      }
 
-           $(window).on('load', function(){
-               
-               $.ajax({
-           		url: '/getUserFavoritePlayers',
-                  contentType: 'application/json',
-                   success: function(response){
-                       let tbodyEl2 = $('#favoriteplayerstable');
-                       tbodyEl2.html('');
-                       
-                       for (let i = 0; i < response.length; i++) {
-                           tbodyEl2.append('\
-                               <tr>\
-                               <td class="playerid">' + response[i][2] + " " + response[i][3] + '</td>\
-                               </tr>\
-                               ');
-                       }
-
-       			},
-       			error: function(error){
-       				console.log(error);
-       			}
-                   
-               });
-               
-               $.ajax({
-       			url: '/getUserFavoriteTeams',
-       			type: 'GET',
-       			success: function(response){
-                       let tbodyEl2 = $('#favoriteteamstable');
-                       tbodyEl2.html('');
-                       
-                       for (let i = 0; i < response.length; i++) {
-                           tbodyEl2.append('\
-                               <tr>\
-                               <td class="teamid">' + response[i][2] + '</td>\
-                               </tr>\
-                               ');
-                       }
-
-       			},
-       			error: function(error){
-       				console.log(error);
-       			}
-                   
-               });
+      			},
+      			error: function(error){
+      				console.log(error);
+      			}
+                  
+              });
               
-               
-         
-           });
+              $.ajax({
+      			url: '/getUserFavoriteTeams',
+      			type: 'GET',
+      			success: function(response){
+                      let tbodyEl2 = $('#favoriteteamstable');
+                      tbodyEl2.html('');
+                      
+                      for (let i = 0; i < response.length; i++) {
+                        console.log(response[0])
+                          tbodyEl2.append('\
+                              <tr>\
+                             <td><a href="teams/roster/' + response[i][0] +'" style="color: white;">' + response[i][2] + '</a></td>\
+                              </tr>\
+                              ');
+                      }
 
+      			},
+      			error: function(error){
+      				console.log(error);
+      			}
+                  
+              });
+              
+              
+              
+              
+          });
 
 
 
       </script>
-    </div>
-</div>
   </body>
 </html>

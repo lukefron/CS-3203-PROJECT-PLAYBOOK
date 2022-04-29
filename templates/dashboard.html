@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+  
     <title>Dashboard</title>
     <!-- Required meta tags -->
     <meta charset="utf-8" />
@@ -23,16 +24,17 @@
 
       <!--Creating the drowpdown menue in the top right of the screen. This will be present throughout the rest of the pages liked from here-->
     <div class="dropdown" style="float: right; width: 10%">
-      <button class="dropbtn">Profile</button>
+      <button class="dropbtn">Navigate</button>
       <div class="dropdown-content">
-        <a href="{{ url_for('search') }}">Edit My Profile</a>
+        <a href="{{ url_for('search') }}">Search</a>
+        <a href="{{ url_for('viewcharts') }}">View Graphs</a>
         <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">About Us</a>
         <a href="{{ url_for('logout') }}">Log Out</a>
       </div>
     </div>
     <!--The dashboard linked to the playbook title. Will be present for all pages that are linked to this one-->
-    <h1><a href="{{ url_for('dashboard') }}">Playbook</a></h1>
-    <h2>Helping you call the next play</h2>
+        <h1><a href="{{ url_for('dashboard') }}">Playbook</a></h1>
+        <h2>Helping you call the next play</h2>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script
@@ -87,35 +89,7 @@
         </table>
       </div>
       <script>
-
-          $(window).on('load', function(){
-              $.ajax({
-      			url: '/teams',
-      			type: 'GET',
-      			success: function(response){
-                      console.log(response[0][0])
-                      let tbodyEl2 = $('#teamsbody');
-
-                      tbodyEl2.html('');
-                      
-                      for (let i = 0; i < response.length; i++) {
-                      console.log(response[i])
-                          tbodyEl2.append('\
-                              <tr>\
-                              <td class="teamid">' + response[i][2] + '</td>\
-                              <td>"' + response[i][1] +'"</td>\
-                              <td>"' + response[i][3] + "-" + response[i][4]+'"</td>\
-                              </tr>\
-                              ');
-                      }
-
-      			},
-      			error: function(error){
-      				console.log(error);
-      			}
-                  
-              });
-              
+    $(window).on('load', function(){
               $.ajax({
       			url: '/getUserFavoritePlayers',
       			type: 'GET',
@@ -128,7 +102,7 @@
                       console.log(response[i][1])
                           tbodyEl2.append('\
                               <tr>\
-                              <td class="playerid">' + response[i][2] + " " + response[i][3] + '</td>\
+                             <td><a href="players/' + response[i][0] +'" style="color: white;">' + response[i][2] + " " + response[i][3] + '</a></td>\
                               </tr>\
                               ');
                       }
@@ -151,7 +125,7 @@
                         console.log(response[0])
                           tbodyEl2.append('\
                               <tr>\
-                              <td class="teamid">' + response[i][2] + '</td>\
+                             <td><a href="teams/roster/' + response[i][0] +'" style="color: white;">' + response[i][2] + '</a></td>\
                               </tr>\
                               ');
                       }
@@ -163,6 +137,70 @@
                   
               });
               
+                $.ajax({
+      			url: '/news',
+      			type: 'GET',
+      			success: function(response){
+                      console.log(response[0][0])
+                      let tbodyEl2 = $('#newsbody');
+
+                      tbodyEl2.html('');
+                      
+                      for (let i = 0; i < response.length; i++) {
+                      console.log(response[i])
+                          tbodyEl2.append('\
+                              <tr>\
+                            <td><a href="' + response[i][2] +'" style="color: white;">' + response[i][1] + '</a></td>\
+                              </tr>\
+                              ');
+                      }
+
+      			},
+      			error: function(error){
+      				console.log(error);
+      			}
+                  
+              });
+
+                 $.ajax({
+                     url: '/getGraphs',
+                     success: function(response) {
+            
+                         let tbodyEl2 = $('#graphbody');
+
+                         tbodyEl2.html('');
+                         tbodyEl2.append('\
+                          <tr>\
+                          <td><img src="../static/images/' + response + '" width="500" height="500"></td>\
+                          </tr>\
+                                 ');
+                         
+                     },
+                     error: function () {
+
+                     }
+                     
+                 });
+                 $.ajax({
+                     url: '/getSpecialGraphs',
+                     success: function(response) {
+            
+                         let tbodyEl2 = $('#specialgraphbody');
+
+                         tbodyEl2.html('');
+                         tbodyEl2.append('\
+                          <tr>\
+                          <td><img src="../static/images/' + response + '" width="500" height="500"></td>\
+                          </tr>\
+                                 ');
+                         
+                     },
+                     error: function () {
+
+                     }
+                     
+                 });
+
               
               
               
@@ -171,26 +209,55 @@
 
 
       </script>
+
       <!--This is the right panel of the screen, which will house the main data tables and other info-->
       <!--Planning on portioning this section into a upper and lower, with the lower looking similar to the home.html bottom-->
-      <div id="right" style="float: right; width: 90%">
-        <div class="çontainer" style="height: 100%">
-            <div id="top" style="float: top; height: 75%">
-                    <table id="teamstable" class="table table-bordered table-striped table-hover" style="color:#fff" bgcolor="gray">
-                        <thead>
-                            <tr>
-                                <th>Abbreviation</th>
-                                <th>Name</th>
-                                <th>2021 Record</th>
-                            </tr>
-                        </thead>
-                        <tbody id="teamsbody"></tbody>
-                    </table>
-                </div>
-            <div id="bottom" style="position: absolute; height: 25%">
+    
+        <div id="right" style="float: right; width: 90%">
+          <div class="çontainer" style="height: 100%">
+              <div id="top" style="float: top; height: 75%">
+                      <table id="newstable" class="table table-bordered table-striped table-hover" style="color:#fff" bgcolor="gray">
+                          <thead>
+                              <tr>
+                                 <H1 align="center"><font style="style=color:cyanblue;">News Around The League</font></H1>
+                              </tr>
+                          </thead>
+                          <tbody id="newsbody"></tbody>
+                      </table>
+                  </div>
+                  <div style="width = 100%">
+                  
+                  <div style="float: right; width: 50%">
+                         <table style="color:#fff" bgcolor="gray">
+                             <thead>
+                                 <tr>
+                                     <th>Favorite Teams Win Percentage</th>
+                                 </tr>
+                             </thead>
+                             <tbody id="graphbody"></tbody>
+                         </table>
+                  </div>
+                  <div style="float: left; width: 50%">
+                         <table style="color:#fff" bgcolor="gray">
+                             <thead>
+                                 <tr>
+                                     <th>Favorite Teams Touchdowns</th>
+                                 </tr>
+                             </thead>
+                             <tbody id="specialgraphbody"></tbody>
+                         </table>
+                  </div>
+            </div>
+          </div>
+      </div>
+      
 
-              </div>
-        </div>
-    </div>
+
+
+    
+
+
+    
+    
   </body>
 </html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Search</title>
+    <!-- Required meta tags -->
+	 <meta charset="utf-8">
+	 <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	 <meta name="viewport" content="width=device-width, initial-scale=1">
+	 <meta name="description" content="">
+	 <meta name="author" content="">
+
+
+	   <!-- Bootstrap CSS -->
+       <link
+         rel="stylesheet"
+         href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+         crossorigin="anonymous"
+       />
+       <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/StyleSheet.css') }}">
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script> 
+  </head>
+    <body>
+          <div class="dropdown" style="float: right; width: 10%">
+            <button class="dropbtn">Navigate</button>
+            <div class="dropdown-content">
+              <a href="{{ url_for('search') }}">Search</a>
+              <a href="{{ url_for('viewcharts') }}">View Graphs</a>
+              <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">About Us</a>
+              <a href="{{ url_for('logout') }}">Log Out</a>
+            </div>
+          </div>
+
+
+      <!--The dashboard linked to the playbook title. Will be present for all pages that are linked to this one-->
+      <h1><a href="{{ url_for('dashboard') }}">Playbook</a></h1>
+      
+      
+      
+      
+          <div class="container" style="width: 100%">
+          <table style="color:#fff" bgcolor="gray">
+              <thead>
+                  <tr>
+                      <th>Player Id</th>
+                      <th>Team Id</th>
+                      <th>Name</th>
+                  </tr>
+              </thead>
+              <tbody id="rosterviewbody"></tbody>
+          </table>
+          </div>
+          <hr>
+          <script>
+        $(window).on('load', function(){
+    $.ajax({
+        url: '/teams/getRosterPlayers/14',
+        type: 'GET',
+        success: function(response){
+                
+                    let tbodyEl2 = $('#rosterviewbody');
+
+                    tbodyEl2.html('');
+
+                    for (let i = 0; i < response.length; i++) {
+                    var numId = response[i][0]
+                    stringId = numId.toString();
+                    console.log(response[i])
+                        tbodyEl2.append('\
+                     <tr>\
+                     <td class="playerid">' + response[i][0] + '</td>\
+                     <td>"' + response[i][1] +'"</td>\
+                     <td>"' + response[i][2] + " " + response[i][3] + '"</td>\
+                    <td><a href="http://localhost:5000/addFavoritePlayer/' + response[i][0] +'" style="color: white; background-color: darkcyan;"> Add To Favorite Players</a></td>\
+                     </tr>\
+                            ');
+                    }
+            },
+            error: function(error){
+            console.log(error);
+            }
+
+        
+    });
+    });
+          </script>
+         
+          <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+          <script src="/static/js/scripts.js"></script>
+      </body>
+  </html>
