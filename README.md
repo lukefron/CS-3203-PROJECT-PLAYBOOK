@@ -1,20 +1,8 @@
 # CS-3203-PROJECT-PLAYBOOK
-## Required Downloads:
-- Python 3.9
-- Flask
-"pip install flask"
-- BeautifulSoup4
-"pip install beautifulsoup4"
-- MySQL connector for Python
-"pip install mysql-connector-python"
 
-## To Start:
-- Clone the repository to a folder on your local machine. Download the required packages, and open a new terminal in the folder you cloned to.
+Demo Video at:
 
-Run the following terminal command:
-"python app.py"
+https://www.youtube.com/watch?v=l3x04oDwEkk
 
-Now, open a browser to 
-"http://localhost:5000"
+ProjectPlaybook 2.0 coming soon with accurate cloning instructions, revamped UI, and updated packages.
 
-If the app is running, you should see hello there on the root directory.
